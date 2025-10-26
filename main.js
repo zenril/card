@@ -183,7 +183,7 @@ document.addEventListener('alpine:init', () => {
             }
 
             // Check if dragged far enough to dismiss
-            if (distance > 250) {
+            if (distance > 150) {
                 this.resetCard();
             }
         },
