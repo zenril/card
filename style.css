@@ -13,7 +13,7 @@ html, body {
     height: 100%;
     overflow: hidden;
     /* Support for mobile browser safe areas */
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    
 }
 
 body {
@@ -36,6 +36,8 @@ body {
     justify-content: center;
     padding: 50px;
     box-sizing: border-box;
+
+    padding: max(50px, env(safe-area-inset-top)) max(50px, env(safe-area-inset-right)) max(50px, env(safe-area-inset-bottom)) max(50px, env(safe-area-inset-left));
 }
 
 .card-viewport {
