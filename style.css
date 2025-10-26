@@ -37,7 +37,13 @@ body {
     padding: 50px;
     box-sizing: border-box;
 
-    padding: max(50px, env(safe-area-inset-top)) max(50px, env(safe-area-inset-right)) max(130px, env(safe-area-inset-bottom)) max(50px, env(safe-area-inset-left));
+    /* padding: max(50px, env(safe-area-inset-top)) max(50px, env(safe-area-inset-right)) max(130px, env(safe-area-inset-bottom)) max(50px, env(safe-area-inset-left)); */
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: max(50px, env(safe-area-inset-top)) max(50px, env(safe-area-inset-right)) max(50px, env(safe-area-inset-bottom)) max(50px, env(safe-area-inset-left));
+    }
 }
 
 .card-viewport {
