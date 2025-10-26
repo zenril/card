@@ -191,3 +191,324 @@ body {
         /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); */
     }
 }
+
+/* Modal Styles */
+[x-cloak] {
+    display: none !important;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 1400px;
+    height: calc(100vh - 40px);
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-grid {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    height: 100%;
+    position: relative;
+}
+
+.modal-grid::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 70%;
+    width: 1px;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+}
+
+/* Left Panel - Preview */
+.modal-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    overflow: hidden;
+    position: relative;
+}
+
+.preview-card-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    perspective: 1000px;
+}
+
+.preview-card {
+    max-width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: cardAppear 0.4s cubic-bezier(0.23,0.64,0.66,1.28) forwards;
+    transform-style: preserve-3d;
+}
+
+.preview-card img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    display: block;
+}
+
+.preview-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 18px;
+}
+
+@keyframes cardAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Right Panel - List */
+.modal-list {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.modal-list h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.modal-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-close,
+.modal-clear {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.modal-close:hover,
+.modal-clear:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+.modal-close:active,
+.modal-clear:active {
+    transform: scale(0.9);
+}
+
+.modal-clear:hover {
+    color: #dc3545;
+}
+
+.card-list-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.card-list-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.card-list-scroll::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+}
+
+.card-list-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.card-list-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.card-list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.card-list-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+    transform: translateX(4px);
+}
+
+.card-list-item.active {
+    background: rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+}
+
+.card-list-thumb {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #f0f0f0;
+}
+
+.card-list-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-list-name {
+    flex: 1;
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.empty-history {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.empty-history p {
+    color: #999;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Modal Transitions */
+.modal-enter {
+    transition: opacity 0.3s ease;
+}
+
+.modal-enter-start {
+    opacity: 0;
+}
+
+.modal-enter-end {
+    opacity: 1;
+}
+
+.modal-leave {
+    transition: opacity 0.2s ease;
+}
+
+.modal-leave-start {
+    opacity: 1;
+}
+
+.modal-leave-end {
+    opacity: 0;
+}
+
+/* Mobile Responsive - Vertical Layout */
+@media (max-width: 768px) {
+    .modal-content {
+        height: 95vh;
+    }
+    
+    .modal-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: 80% 20%;
+    }
+    
+    .modal-grid::after {
+        left: 0;
+        top: 80%;
+        width: 100%;
+        height: 1px;
+    }
+    
+    .modal-preview {
+        padding: 20px;
+    }
+    
+    .modal-header {
+        padding: 12px 15px;
+    }
+    
+    .modal-list h2 {
+        font-size: 16px;
+    }
+    
+    .card-list-scroll {
+        padding: 8px;
+    }
+    
+    .card-list-item {
+        padding: 8px;
+        gap: 10px;
+    }
+    
+    .card-list-thumb {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .card-list-name {
+        font-size: 13px;
+    }
+}

@@ -51,6 +51,157 @@
                 </template>
             </div>
         </div>
+
+        <!-- Card Browser Modal -->
+        <div 
+            class="modal-overlay" 
+            x-show="showModal" 
+            x-cloak
+            @click.self="closeModal()"
+            x-transition:enter="modal-enter"
+            x-transition:enter-start="modal-enter-start"
+            x-transition:enter-end="modal-enter-end"
+            x-transition:leave="modal-leave"
+            x-transition:leave-start="modal-leave-start"
+            x-transition:leave-end="modal-leave-end"
+        >
+            <div class="modal-content">
+                <div class="modal-grid">
+                    <!-- Left Panel - Card Preview -->
+                    <div class="modal-preview">
+                        <div class="preview-card-container">
+                            <template x-if="selectedPreviewCard">
+                                <div 
+                                    class="preview-card"
+                                    :class="{ 'preview-card-entering': isPreviewAnimating }"
+                                >
+                                    <img :src="selectedPreviewCard" :style="{ aspectRatio: cardData.width + '/' + cardData.height }" alt="Card Preview">
+                                </div>
+                            </template>
+                            <template x-if="!selectedPreviewCard">
+                                <div class="preview-placeholder">
+                                    <p>Select a card to preview</p>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Panel - Card List -->
+                    <div class="modal-list">
+                        <div class="modal-header">
+                            <h2>All Cards</h2>
+                            <button class="modal-close" @click="closeModal()" aria-label="Close">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="card-list-scroll">
+                            <template x-for="card in cardData.cards" :key="card">
+                                <div 
+                                    class="card-list-item"
+                                    :class="{ 'active': selectedPreviewCard === card }"
+                                    @click="selectCard(card)"
+                                >
+                                    <div class="card-list-thumb">
+                                        <img :src="card" :style="{ aspectRatio: cardData.width + '/' + cardData.height }" alt="Card thumbnail">
+                                    </div>
+                                    <span class="card-list-name" x-text="getCardName(card)"></span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Modal -->
+        <div 
+            class="modal-overlay" 
+            x-show="showHistoryModal" 
+            x-cloak
+            @click.self="closeHistoryModal()"
+            x-transition:enter="modal-enter"
+            x-transition:enter-start="modal-enter-start"
+            x-transition:enter-end="modal-enter-end"
+            x-transition:leave="modal-leave"
+            x-transition:leave-start="modal-leave-start"
+            x-transition:leave-end="modal-leave-end"
+        >
+            <div class="modal-content">
+                <div class="modal-grid">
+                    <!-- Left Panel - Card Preview -->
+                    <div class="modal-preview">
+                        <div class="preview-card-container">
+                            <template x-if="selectedHistoryCard">
+                                <div 
+                                    class="preview-card"
+                                    :class="{ 'preview-card-entering': isHistoryAnimating }"
+                                >
+                                    <img :src="selectedHistoryCard" :style="{ aspectRatio: cardData.width + '/' + cardData.height }" alt="Card Preview">
+                                </div>
+                            </template>
+                            <template x-if="!selectedHistoryCard && cardHistory.length > 0">
+                                <div class="preview-placeholder">
+                                    <p>Select a card to preview</p>
+                                </div>
+                            </template>
+                            <template x-if="cardHistory.length === 0">
+                                <div class="preview-placeholder">
+                                    <p>No cards in history yet</p>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Panel - History List -->
+                    <div class="modal-list">
+                        <div class="modal-header">
+                            <h2>Play History</h2>
+                            <div class="modal-header-actions">
+                                <button 
+                                    class="modal-clear" 
+                                    @click="clearHistory()" 
+                                    aria-label="Clear History"
+                                    x-show="cardHistory.length > 0"
+                                >
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                    </svg>
+                                </button>
+                                <button class="modal-close" @click="closeHistoryModal()" aria-label="Close">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-list-scroll">
+                            <template x-if="cardHistory.length === 0">
+                                <div class="empty-history">
+                                    <p>No cards drawn yet. Start drawing cards to build your history!</p>
+                                </div>
+                            </template>
+                            <template x-for="(card, index) in cardHistory.slice().reverse()" :key="index">
+                                <div 
+                                    class="card-list-item"
+                                    :class="{ 'active': selectedHistoryCard === card }"
+                                    @click="selectHistoryCard(card)"
+                                >
+                                    <div class="card-list-thumb">
+                                        <img :src="card" :style="{ aspectRatio: cardData.width + '/' + cardData.height }" alt="Card thumbnail">
+                                    </div>
+                                    <span class="card-list-name" x-text="getCardName(card)"></span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
