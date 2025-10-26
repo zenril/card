@@ -49,7 +49,7 @@ document.addEventListener('alpine:init', () => {
                 setTimeout(() => {
                     this.isFlipped = true;
                     this.isFlipping = false;
-                }, 300); // Half of animation duration (0.6s)
+                }, 500); // Half of animation duration (0.6s)
             });
         },
 
