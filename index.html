@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Draw</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="cards.js"></script>
+    <script src="main.js"></script>
+</head>
+<body>
+    <div id="app" class="container" x-data="cardApp()">
+        <div class="card-viewport">
+            <div 
+                class="card-stack"
+                :style="{ aspectRatio: cardData.width + '/' + cardData.height }"
+                @click="flipCard($event)"
+                @touchstart="startDrag($event)"
+                @touchmove="onDrag($event)"
+                @touchend="endDrag($event)"
+                @mousedown="startDrag($event)"
+                @mousemove="onDrag($event)"
+                @mouseup="endDrag($event)"
+                @dragstart.prevent
+            >
+                <!-- Deck (Base - always visible) -->
+                <div class="card card-deck">
+                    <img :src="cardData.back" :style="{ aspectRatio: cardData.width + '/' + cardData.height }" alt="Card Deck" draggable="false">
+                </div>
+                
+                <!-- Flipping Card with Both Faces -->
+                <template x-if="currentCard">
+                    <div 
+                        class="card-container"
+                        :class="{ 'is-flipping': isFlipping, 'is-flipped': isFlipped, 'is-dragging': isDragging }"
+                        :style="{ 
+                            '--zAngle': zAngle,
+                            ...(isDragging ? { transform: `rotateY(180deg) translate(${dragOffsetX}px, ${dragOffsetY}px) rotateZ(calc(var(--zAngle) * 1deg))` } : {})
+                        }"
+                    >
+                        <!-- Front Face (the actual card) -->
+                        <div class="card-face card-face-front">
+                            <img :src="currentCard" :style="{ aspectRatio: cardData.width + '/' + cardData.height }" alt="Card Front" draggable="false">
+                        </div>
+                        <!-- Back Face (card back design) -->
+                        <div class="card-face card-face-back">
+                            <img :src="cardData.back" :style="{ aspectRatio: cardData.width + '/' + cardData.height }" alt="Card Back" draggable="false">
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

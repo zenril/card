@@ -1,0 +1,83 @@
+---
+alwaysApply: true
+---
+
+# Card Draw App Structure
+
+A browser-based card drawing application built with AlpineJS, running without a server or bundler.
+
+## File Overview
+
+- **[index.html](mdc:index.html)** - Main entry point with AlpineJS integration and dynamic inline styles
+- **[main.js](mdc:main.js)** - Application logic using ES module imports
+- **[style.css](mdc:style.css)** - Responsive styling with CSS flip animations and drag transitions
+- **[cards.js](mdc:cards.js)** - Card deck configuration exported as ES module (width, height, card paths, back image)
+- **[cards/](mdc:cards/)** - Directory containing card images
+- **[images/pattern.svg](mdc:images/pattern.svg)** - Background pattern SVG
+
+## Architecture
+
+### AlpineJS Component (`cardApp`)
+
+The app uses a single Alpine component with the following state:
+
+- `cardData` - Imported card configuration from cards.js
+- `currentCard` - Path to currently displayed card (null when showing back)
+- `isFlipping` - Animation in progress flag
+- `isFlipped` - Card is flipped and displayed flag
+- `cardHistory` - Array of flipped card paths (for future MVP features)
+- `dragStartX` / `dragStartY` - Starting position of drag
+- `dragOffsetX` / `dragOffsetY` - Current drag offset for visual feedback
+- `isDragging` - Currently dragging flag
+- `hasDragged` - Flag to prevent click event after drag
+
+### Key Methods
+
+- `flipCard()` - Selects a random card and triggers flip animation
+- `startDrag(event)` - Initiates drag tracking for mouse/touch
+- `onDrag(event)` - Tracks movement and translates card position in real-time
+- `endDrag(event)` - Completes drag interaction and resets offsets
+- `resetCard()` - Returns to deck back (dismisses current card)
+
+## Interaction Flow
+
+1. **Click/tap deck back** → `flipCard()` triggered
+2. Card animates using CSS `cardFlip` keyframes (0.6s)
+3. New card appears with 3D rotation flip effect
+4. **Drag flipped card:**
+   - Card follows cursor/finger in real-time
+   - Distance tracked continuously
+   - If dragged > 50px → card dismisses immediately
+   - If dragged < 50px and released → card snaps back smoothly (0.2s transition)
+5. **Small movements < 5px** treated as clicks, not drags
+6. New random card ready for next flip
+
+## Responsive Design
+
+- Cards scale dynamically using inline styles bound to `cardData.width` and `cardData.height`
+- Max-width: `calc(100vh * width / height)` and max-height: `calc(100vw * height / width)`
+- 50px padding on `.container` creates margin around card area
+- Adapts for mobile (touch) and desktop (mouse) with unified event handlers
+- `touch-action: none` prevents browser scrolling during drag
+- Cursor changes: `grab` when hovering flipped card, `grabbing` while dragging
+
+## Visual Styling
+
+- **Background**: Repeating SVG pattern with radial gradient vignette overlay
+  - Pattern: `images/pattern.svg` (dark geometric diamonds)
+  - Vignette: `radial-gradient(ellipse at center, rgba(0,0,0,0.3) 5%, rgba(0,0,0,0.9) 100%)`
+- **Cards**: 3D transforms, smooth transitions, drop shadows
+- **Drag feedback**: Real-time CSS transform translation follows pointer
+
+## Module Structure
+
+Uses ES6 module imports (no build step required):
+```javascript
+// cards.js exports
+export const cardData = { width, height, cards, back };
+
+// main.js imports
+// (cardData imported at top, used in Alpine component)
+```
+
+This allows the app to run directly in modern browsers without bundlers.
