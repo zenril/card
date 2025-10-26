@@ -21,6 +21,7 @@ document.addEventListener('alpine:init', () => {
         selectedHistoryCard: null,
         isPreviewAnimating: false,
         isHistoryAnimating: false,
+        isListExpanded: false,
 
         init() {
             console.log('Card app initialized');
@@ -47,8 +48,8 @@ document.addEventListener('alpine:init', () => {
                 }
             });
 
-            // Swipe from edges to open modals (mobile)
-            this.setupEdgeSwipe();
+            // Swipe from edges to open modals (mobile) - DISABLED, using tap areas instead
+            // this.setupEdgeSwipe();
         },
 
         setupEdgeSwipe() {
@@ -220,12 +221,18 @@ document.addEventListener('alpine:init', () => {
             this.showModal = !this.showModal;
             if (!this.showModal) {
                 this.selectedPreviewCard = null;
+                this.isListExpanded = false;
             }
         },
 
         closeModal() {
             this.showModal = false;
             this.selectedPreviewCard = null;
+            this.isListExpanded = false;
+        },
+
+        toggleListExpansion() {
+            this.isListExpanded = !this.isListExpanded;
         },
 
         selectCard(cardPath) {
@@ -255,12 +262,14 @@ document.addEventListener('alpine:init', () => {
             this.showHistoryModal = !this.showHistoryModal;
             if (!this.showHistoryModal) {
                 this.selectedHistoryCard = null;
+                this.isListExpanded = false;
             }
         },
 
         closeHistoryModal() {
             this.showHistoryModal = false;
             this.selectedHistoryCard = null;
+            this.isListExpanded = false;
         },
 
         selectHistoryCard(cardPath) {

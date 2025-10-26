@@ -14,6 +14,22 @@
 </head>
 <body>
     <div id="app" class="container" x-data="cardApp()">
+        <!-- Mobile tap areas for opening modals -->
+        <button 
+            class="mobile-tap-area mobile-tap-top" 
+            @click="toggleModal()"
+            x-show="!showModal && !showHistoryModal"
+            x-cloak
+            aria-label="Open card browser"
+        ></button>
+        <button 
+            class="mobile-tap-area mobile-tap-bottom" 
+            @click="toggleHistoryModal()"
+            x-show="!showModal && !showHistoryModal"
+            x-cloak
+            aria-label="Open history"
+        ></button>
+
         <div class="card-viewport">
             <div 
                 class="card-stack"
@@ -69,7 +85,7 @@
             x-transition:leave-end="modal-leave-end"
         >
             <div class="modal-content">
-                <div class="modal-grid">
+                <div class="modal-grid" :class="{ 'modal-grid-expanded': isListExpanded }">
                     <!-- Left Panel - Card Preview -->
                     <div class="modal-preview">
                         <div class="preview-card-container">
@@ -92,7 +108,17 @@
                     <!-- Right Panel - Card List -->
                     <div class="modal-list">
                         <div class="modal-header">
-                            <h2>All Cards</h2>
+                            <div class="modal-header-left">
+                                <button class="modal-expand" @click="toggleListExpansion()" aria-label="Toggle list size">
+                                    <svg x-show="!isListExpanded" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="18 15 12 9 6 15"></polyline>
+                                    </svg>
+                                    <svg x-show="isListExpanded" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </button>
+                                <h2>All Cards</h2>
+                            </div>
                             <button class="modal-close" @click="closeModal()" aria-label="Close">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -133,7 +159,7 @@
             x-transition:leave-end="modal-leave-end"
         >
             <div class="modal-content">
-                <div class="modal-grid">
+                <div class="modal-grid" :class="{ 'modal-grid-expanded': isListExpanded }">
                     <!-- Left Panel - Card Preview -->
                     <div class="modal-preview">
                         <div class="preview-card-container">
@@ -161,7 +187,17 @@
                     <!-- Right Panel - History List -->
                     <div class="modal-list">
                         <div class="modal-header">
-                            <h2>Play History</h2>
+                            <div class="modal-header-left">
+                                <button class="modal-expand" @click="toggleListExpansion()" aria-label="Toggle list size">
+                                    <svg x-show="!isListExpanded" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="18 15 12 9 6 15"></polyline>
+                                    </svg>
+                                    <svg x-show="isListExpanded" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </button>
+                                <h2>Play History</h2>
+                            </div>
                             <div class="modal-header-actions">
                                 <button 
                                     class="modal-clear" 
