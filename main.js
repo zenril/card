@@ -22,6 +22,7 @@ document.addEventListener('alpine:init', () => {
         isPreviewAnimating: false,
         isHistoryAnimating: false,
         isListExpanded: false,
+        historyUpdateTrigger: 0,
 
         init() {
             console.log('Card app initialized');
@@ -272,6 +273,8 @@ document.addEventListener('alpine:init', () => {
         },
 
         getTimeAgo(historyEntry) {
+            // Reference historyUpdateTrigger to force recalculation when it changes
+            this.historyUpdateTrigger;
             const timestamp = this.getHistoryTimestamp(historyEntry);
             return timestamp ? timeAgo(timestamp) : '';
         },
@@ -289,6 +292,9 @@ document.addEventListener('alpine:init', () => {
             if (!this.showHistoryModal) {
                 this.selectedHistoryCard = null;
                 this.isListExpanded = false;
+            } else {
+                // Update the trigger to force recalculation of time ago values
+                this.historyUpdateTrigger++;
             }
         },
 
