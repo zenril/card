@@ -8,9 +8,30 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Card Draw</title>
     <link rel="stylesheet" href="style.css">
+    
     <script src="lib/timeago.js"></script>
-    <script defer src="lib/alpine.js"></script>
     <script src="cards.js"></script>
+    
+    <!-- Dynamically preload card images from cardData -->
+    <script>
+        // Preload card back
+        const backPreload = document.createElement('link');
+        backPreload.rel = 'preload';
+        backPreload.as = 'image';
+        backPreload.href = cardData.back;
+        document.head.appendChild(backPreload);
+        
+        // Preload all card faces
+        cardData.cards.forEach(cardPath => {
+            const link = document.createElement('link');
+            link.rel = 'preload';
+            link.as = 'image';
+            link.href = cardPath;
+            document.head.appendChild(link);
+        });
+    </script>
+    
+    <script defer src="lib/alpine.js"></script>
     <script src="main.js"></script>
 </head>
 <body>
@@ -60,11 +81,11 @@
                         }"
                     >
                         <!-- Front Face (the actual card) -->
-                        <div class="card-face card-face-front" :style="{ aspectRatio: cardData.width + '/' + cardData.height }">
+                        <div class="card-face card-face-front">
                             <img :src="currentCard"  alt="Card Front" draggable="false">
                         </div>
                         <!-- Back Face (card back design) -->
-                        <div class="card-face card-face-back" :style="{ aspectRatio: cardData.width + '/' + cardData.height }">
+                        <div class="card-face card-face-back">
                             <img :src="cardData.back" alt="Card Back" draggable="false">
                         </div>
                     </div>

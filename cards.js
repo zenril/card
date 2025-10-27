@@ -1,12 +1,9 @@
 const cardData = {
-  width: 700,
-  height: 1840,
-  cards: [
-    "./cards/520-700x1840.jpg",
-    "./cards/758-700x1840.jpg",
-    "./cards/819-700x1840.jpg",
-    "./cards/929-700x1840.jpg",
-    "./cards/997-700x1840.jpg"
-  ],
-  back: "./cards/back.png"
-};
+    width: 700,
+    height: 1500,
+    cards: [
+      "./cards/a-700x1500.jpg",
+      "./cards/b-700x1500.jpg"
+    ],
+    back: "./cards/back.png"
+  };
