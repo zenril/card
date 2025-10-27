@@ -122,8 +122,11 @@ document.addEventListener('alpine:init', () => {
 
             this.zAngle = Math.floor(Math.random() * 11) - 5;
             
-            // Track history and save to localStorage
-            this.cardHistory.push(this.currentCard);
+            // Track history with timestamp and save to localStorage
+            this.cardHistory.push({
+                card: this.currentCard,
+                timestamp: Date.now()
+            });
             this.saveHistory();
 
             // Trigger flip animation
@@ -257,6 +260,29 @@ document.addEventListener('alpine:init', () => {
                       .join(' ');
         },
 
+        // Helper methods for history with timestamps
+        getHistoryCardPath(historyEntry) {
+            // Handle both old format (string) and new format (object)
+            return typeof historyEntry === 'string' ? historyEntry : historyEntry.card;
+        },
+
+        getHistoryTimestamp(historyEntry) {
+            // Handle both old format (string) and new format (object)
+            return typeof historyEntry === 'string' ? null : historyEntry.timestamp;
+        },
+
+        getTimeAgo(historyEntry) {
+            const timestamp = this.getHistoryTimestamp(historyEntry);
+            return timestamp ? timeAgo(timestamp) : '';
+        },
+
+        getPlayCount(cardPath) {
+            return this.cardHistory.filter(entry => {
+                const entryCard = this.getHistoryCardPath(entry);
+                return entryCard === cardPath;
+            }).length;
+        },
+
         // History modal methods
         toggleHistoryModal() {
             this.showHistoryModal = !this.showHistoryModal;
@@ -272,8 +298,8 @@ document.addEventListener('alpine:init', () => {
             this.isListExpanded = false;
         },
 
-        selectHistoryCard(cardPath) {
-            this.selectedHistoryCard = cardPath;
+        selectHistoryCard(historyEntry) {
+            this.selectedHistoryCard = this.getHistoryCardPath(historyEntry);
             this.isHistoryAnimating = true;
             setTimeout(() => {
                 this.isHistoryAnimating = false;

@@ -8,6 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Card Draw</title>
     <link rel="stylesheet" href="style.css">
+    <script src="lib/timeago.js"></script>
     <script defer src="lib/alpine.js"></script>
     <script src="cards.js"></script>
     <script src="main.js"></script>
@@ -136,7 +137,10 @@
                                     <div class="card-list-thumb">
                                         <img :src="card" :style="{ aspectRatio: cardData.width + '/' + cardData.height }" alt="Card thumbnail">
                                     </div>
-                                    <span class="card-list-name" x-text="getCardName(card)"></span>
+                                    <div class="card-list-info">
+                                        <span class="card-list-name" x-text="getCardName(card)"></span>
+                                        <span class="card-list-meta" x-text="'played: ' + getPlayCount(card)" x-show="getPlayCount(card) > 0"></span>
+                                    </div>
                                 </div>
                             </template>
                         </div>
@@ -224,16 +228,19 @@
                                     <p>No cards drawn yet. Start drawing cards to build your history!</p>
                                 </div>
                             </template>
-                            <template x-for="(card, index) in cardHistory.slice().reverse()" :key="index">
+                            <template x-for="(entry, index) in cardHistory.slice().reverse()" :key="index">
                                 <div 
                                     class="card-list-item"
-                                    :class="{ 'active': selectedHistoryCard === card }"
-                                    @click="selectHistoryCard(card)"
+                                    :class="{ 'active': selectedHistoryCard === getHistoryCardPath(entry) }"
+                                    @click="selectHistoryCard(entry)"
                                 >
                                     <div class="card-list-thumb">
-                                        <img :src="card" :style="{ aspectRatio: cardData.width + '/' + cardData.height }" alt="Card thumbnail">
+                                        <img :src="getHistoryCardPath(entry)" :style="{ aspectRatio: cardData.width + '/' + cardData.height }" alt="Card thumbnail">
                                     </div>
-                                    <span class="card-list-name" x-text="getCardName(card)"></span>
+                                    <div class="card-list-info">
+                                        <span class="card-list-name" x-text="getCardName(getHistoryCardPath(entry))"></span>
+                                        <span class="card-list-meta" x-text="getTimeAgo(entry)" x-show="getTimeAgo(entry)"></span>
+                                    </div>
                                 </div>
                             </template>
                         </div>

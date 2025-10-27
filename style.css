@@ -498,13 +498,29 @@ body {
     object-fit: cover;
 }
 
-.card-list-name {
+.card-list-info {
     flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-width: 0;
+}
+
+.card-list-name {
     font-size: 14px;
     color: #333;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    flex-shrink: 1;
+}
+
+.card-list-meta {
+    font-size: 12px;
+    color: #999;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .empty-history {
