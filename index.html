@@ -45,7 +45,7 @@
                 @dragstart.prevent
             >
                 <!-- Deck (Base - always visible) -->
-                <div class="card card-deck">
+                <div class="card card-deck" :style="{ aspectRatio: cardData.width + '/' + cardData.height }">
                     <img :src="cardData.back" :style="{ aspectRatio: cardData.width + '/' + cardData.height }" alt="Card Deck" draggable="false">
                 </div>
                 
@@ -60,12 +60,12 @@
                         }"
                     >
                         <!-- Front Face (the actual card) -->
-                        <div class="card-face card-face-front">
-                            <img :src="currentCard" :style="{ aspectRatio: cardData.width + '/' + cardData.height }" alt="Card Front" draggable="false">
+                        <div class="card-face card-face-front" :style="{ aspectRatio: cardData.width + '/' + cardData.height }">
+                            <img :src="currentCard"  alt="Card Front" draggable="false">
                         </div>
                         <!-- Back Face (card back design) -->
-                        <div class="card-face card-face-back">
-                            <img :src="cardData.back" :style="{ aspectRatio: cardData.width + '/' + cardData.height }" alt="Card Back" draggable="false">
+                        <div class="card-face card-face-back" :style="{ aspectRatio: cardData.width + '/' + cardData.height }">
+                            <img :src="cardData.back" alt="Card Back" draggable="false">
                         </div>
                     </div>
                 </template>

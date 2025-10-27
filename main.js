@@ -252,9 +252,7 @@ document.addEventListener('alpine:init', () => {
             const filename = cardPath.split('/').pop();
             // Remove extension and dimensions
             const name = filename.replace(/\.(jpg|png|jpeg)$/i, '')
-                                 .replace(/-\d+x\d+/, '')
-                                 .replace(/-/g, ' ')
-                                 .replace(/_/g, ' ');
+                                 .replace(/[^a-zA-Z0-9]/g, ' ');
             // Capitalize first letter of each word
             return name.split(' ')
                       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
