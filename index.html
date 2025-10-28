@@ -66,8 +66,8 @@
                 @dragstart.prevent
             >
                 <!-- Deck (Base - always visible) -->
-                <div class="card card-deck" :style="{ aspectRatio: cardData.width + '/' + cardData.height }">
-                    <img :src="cardData.back" :style="{ aspectRatio: cardData.width + '/' + cardData.height }" alt="Card Deck" draggable="false">
+                <div class="card card-deck" >
+                    <img :src="cardData.back" alt="Card Deck" draggable="false">
                 </div>
                 
                 <!-- Flipping Card with Both Faces -->
