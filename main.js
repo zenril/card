@@ -123,10 +123,11 @@ document.addEventListener('alpine:init', () => {
 
             this.zAngle = Math.floor(Math.random() * 11) - 5;
             
-            // Track history with timestamp and save to localStorage
+            // Track history with timestamp, UID, and save to localStorage
             this.cardHistory.push({
                 card: this.currentCard,
-                timestamp: Date.now()
+                timestamp: Date.now(),
+                uid: Date.now() + Math.random() // Simple UID: timestamp + random
             });
             this.saveHistory();
 
@@ -316,6 +317,31 @@ document.addEventListener('alpine:init', () => {
                 this.selectedHistoryCard = null;
                 this.saveHistory();
             }
+        },
+
+        deleteHistoryEntry(uid) {
+            // Find and remove the entry with the matching UID
+            const index = this.cardHistory.findIndex(entry => {
+                // Handle old entries without UID
+                return entry.uid === uid;
+            });
+            
+            if (index !== -1) {
+                const deletedCard = this.getHistoryCardPath(this.cardHistory[index]);
+                this.cardHistory.splice(index, 1);
+                
+                // If the deleted card was selected, clear selection
+                if (this.selectedHistoryCard === deletedCard) {
+                    this.selectedHistoryCard = null;
+                }
+                
+                this.saveHistory();
+            }
+        },
+
+        getHistoryUid(historyEntry) {
+            // Handle both old format (without UID) and new format (with UID)
+            return historyEntry.uid || null;
         },
 
         // localStorage methods
